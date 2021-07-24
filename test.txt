@@ -1,1 +1,5 @@
-Test
+export TOKEN=`curl -d '{"email":"thmayer77@googlemail.com","password":"mySecret"}' -H "Content-Type: application/json" -X POST a13e3ea2a1f5842df97d34b5eeceb2da-393347679.us-east-2.elb.amazonaws.com/auth  | jq -r '.token'`
+curl --request GET 'a13e3ea2a1f5842df97d34b5eeceb2da-393347679.us-east-2.elb.amazonaws.com/contents' -H "Authorization: Bearer ${TOKEN}" | jq 
+
+external IP:
+a13e3ea2a1f5842df97d34b5eeceb2da-393347679.us-east-2.elb.amazonaws.com
