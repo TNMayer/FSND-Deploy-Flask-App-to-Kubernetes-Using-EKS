@@ -15,7 +15,6 @@ from flask import Flask, jsonify, request, abort
 JWT_SECRET = os.environ.get('JWT_SECRET', 'abc123abc1234')
 LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO')
 
-
 def _logger():
     '''
     Setup logger format, level, and handler.
@@ -56,11 +55,9 @@ def require_jwt(function):
         return function(*args, **kws)
     return decorated_function
 
-
 @APP.route('/', methods=['POST', 'GET'])
 def health():
     return jsonify("Healthy")
-
 
 @APP.route('/auth', methods=['POST'])
 def auth():
@@ -82,7 +79,6 @@ def auth():
 
     return jsonify(token=_get_jwt(user_data).decode('utf-8'))
 
-
 @APP.route('/contents', methods=['GET'])
 def decode_jwt():
     """
@@ -92,17 +88,16 @@ def decode_jwt():
         abort(401)
     data = request.headers['Authorization']
     token = str.replace(str(data), 'Bearer ', '')
+    
     try:
         data = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
     except: # pylint: disable=bare-except
         abort(401)
-
-
+    
     response = {'email': data['email'],
                 'exp': data['exp'],
                 'nbf': data['nbf'] }
     return jsonify(**response)
-
 
 def _get_jwt(user_data):
     exp_time = datetime.datetime.utcnow() + datetime.timedelta(weeks=2)
